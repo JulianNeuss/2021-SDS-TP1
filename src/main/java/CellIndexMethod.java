@@ -6,11 +6,11 @@ public class CellIndexMethod {
     private CellIndexMethod() {
     }
 
-    public static Map<Integer, Set<Integer>> findNeighbours(Set<Particle> particles, int matrixSize, int matrixRowsAndColumns, double interactionRadius){
+    public static Map<Integer, Set<Integer>> findNeighbours(Set<Particle> particles, double matrixSize, int matrixRowsAndColumns, double interactionRadius){
         if(matrixSize <= 0 || matrixRowsAndColumns <= 0)
             throw new IllegalArgumentException("Matrix size nor matrix rows nor columns can't be <=0 (matrixSize: " + matrixSize + ", matrixRowsAndColumns: " + matrixRowsAndColumns);
 
-        double cellSize = (double) matrixSize/matrixRowsAndColumns;
+        double cellSize = matrixSize/matrixRowsAndColumns;
 
         if(cellSize <= interactionRadius){
             throw new IllegalArgumentException("The condition L/M > rc is not met");
