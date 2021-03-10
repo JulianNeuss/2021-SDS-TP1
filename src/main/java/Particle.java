@@ -7,8 +7,8 @@ public class Particle {
 
     public Particle(int id, int radius, double x, double y) {
         this.id = id;
-        if(radius <= 0)
-            throw new IllegalArgumentException("Radius is less or equal than 0");
+        if(radius < 0)
+            throw new IllegalArgumentException("Radius can't be negative");
         this.radius = radius;
         this.position = new Position(x, y);
     }
@@ -22,7 +22,7 @@ public class Particle {
     }
 
     public double distanceTo(Particle otherParticle){
-        return position.distanceTo(otherParticle.getPosition());
+        return position.distanceTo(otherParticle.getPosition()) - radius - otherParticle.radius;
     }
 
     public Position getPosition() {
