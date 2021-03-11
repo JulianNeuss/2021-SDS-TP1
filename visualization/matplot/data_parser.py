@@ -74,7 +74,7 @@ def output_file_getter(sim_data,output_file_path):
     line = ofile.readline()
     while line:
         d = line.strip().split(OUTPUT_FILE_SEPARATOR)
-        sim_data.neighbours[d[0]] = list(map(lambda x: int(x),d[1:]))
+        sim_data.neighbours[int(d[0])] = list(map(lambda x: int(x),d[1:]))
 
         # advance loop
         line = ofile.readline()
