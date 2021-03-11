@@ -5,14 +5,14 @@ import sys
 
 sim_data = data_parser.data_getter()
 
-def show_particles(id = -1):
+def show_particles(particleid = -1):
     patches = [plt.Circle((p.x,p.y), p.r) for p in  sim_data.particles]
     color = []
     for ind,p in  enumerate(sim_data.particles):
         pid = ind + 1
-        if pid == id:
+        if pid == particleid:
             color.append("red")
-        elif id in sim_data.neighbours and pid in sim_data.neighbours[id]:
+        elif particleid in sim_data.neighbours and pid in sim_data.neighbours[particleid]:
             color.append("yellow")
         else:
             color.append("black")
@@ -22,6 +22,23 @@ def show_particles(id = -1):
     coll = matplotlib.collections.PatchCollection(patches, facecolors=color)
     ax.add_collection(coll)
     ax.margins(0.01)
+    ax.figure.canvas.draw()
+
+# finish this
+def onclick(event):
+    particle_found = False
+    for ind, p in enumerate(sim_data.particles):
+        pid = ind + 1
+        dist = (event.xdata - p.x) ** 2 + (event.ydata - p.y) ** 2
+        if dist <= p.r:
+            particle_found = True
+            show_particles(pid)
+        
+
 if len(sys.argv) > 1:
     show_particles(int(sys.argv[1]))
-    plt.show()
+else:
+    show_particles()
+
+plt.gca().figure.canvas.mpl_connect('button_press_event',onclick)
+plt.show()

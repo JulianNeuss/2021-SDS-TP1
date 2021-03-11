@@ -83,9 +83,16 @@ def output_file_getter(sim_data,output_file_path):
     ofile.close()
 
 
-def data_getter():
+def data_getter( static_file_path = None,dynamic_file_path = None,output_file_path = None ):
+    if static_file_path == None:
+        static_file_path = os.path.join(DATA_PATH,STATIC_FILE)
+    if dynamic_file_path == None:
+        dynamic_file_path = os.path.join(DATA_PATH,DYNAMIC_FILE)
+    if output_file_path == None:
+        output_file_path = os.path.join(DATA_PATH,OUTPUT_FILE)
+
     data = SimulationData()
-    static_file_getter(data,os.path.join(DATA_PATH,STATIC_FILE))
-    dynamic_file_getter(data,os.path.join(DATA_PATH,DYNAMIC_FILE))
-    output_file_getter(data,os.path.join(DATA_PATH,OUTPUT_FILE))
+    static_file_getter( data, static_file_path )
+    dynamic_file_getter( data, dynamic_file_path )
+    output_file_getter( data, output_file_path )
     return data
