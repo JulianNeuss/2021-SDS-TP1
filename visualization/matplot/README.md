@@ -1,7 +1,17 @@
 ## Visualizer
 
-To execute run:
+### Inizialitation:
 ```
-source .env
-python visualizer.py particleid
+installMatplot.sh
+source .env/bin/activate
+```
+
+### Running:
+```
+python visualizer.py
+```
+
+### For more information and additional options run:
+```
+python -h
 ```

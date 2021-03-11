@@ -2,8 +2,21 @@ import matplotlib.pyplot as plt
 import data_parser as data_parser
 import matplotlib.collections
 import sys
+import argparse
 
-sim_data = data_parser.data_getter()
+argp = argparse.ArgumentParser(description="Particle neighbour visualizer")
+argp.add_argument('--static-file-path', dest='static_path', help='static file path')
+argp.add_argument('--dynamic-file-path', dest='dynamic_path', help='dynamic file path')
+argp.add_argument('--output-file-path', dest='output_path', help='output file path')
+argp.add_argument('pid',nargs='?', help='particle id to highlight')
+
+args = argp.parse_args()
+
+sim_data = data_parser.data_getter(
+    static_file_path=args.static_path,
+    dynamic_file_path=args.dynamic_path,
+    output_file_path=args.output_path
+    )
 
 def show_particles(particleid = -1):
     patches = [plt.Circle((p.x,p.y), p.r) for p in  sim_data.particles]
@@ -35,8 +48,8 @@ def onclick(event):
             show_particles(pid)
         
 
-if len(sys.argv) > 1:
-    show_particles(int(sys.argv[1]))
+if args.pid != None:
+    show_particles(int(args.pid))
 else:
     show_particles()
 
