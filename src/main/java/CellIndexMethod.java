@@ -6,7 +6,7 @@ public class CellIndexMethod {
     private CellIndexMethod() {
     }
 
-    public static Map<Integer, Set<Integer>> findNeighbours(Set<Particle> particles, double matrixSize, int matrixRowsAndColumns, double interactionRadius){
+    public static Map<Integer, Set<Integer>> findNeighbours(Set<Particle> particles, double matrixSize, int matrixRowsAndColumns, double interactionRadius, boolean periodicBorder){
         if(matrixSize <= 0 || matrixRowsAndColumns <= 0)
             throw new IllegalArgumentException("Matrix size nor matrix rows nor columns can't be <=0 (matrixSize: " + matrixSize + ", matrixRowsAndColumns: " + matrixRowsAndColumns);
 
@@ -31,56 +31,163 @@ public class CellIndexMethod {
                 for(Particle particle : particlesMatrix.get(row).get(column)){
 
                     // misma celda
-                    Set<Integer> neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row).get(column), interactionRadius);
-                    if(!neighboursIds.isEmpty() && !idToNeighbourIdsMap.containsKey(particle.getId()))
-                        idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
-                    idToNeighbourIdsMap.get(particle.getId()).addAll(neighboursIds);
+                    Set<Integer> neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row).get(column), interactionRadius, matrixSize, periodicBorder);
+                    if(!neighboursIds.isEmpty()) {
+                        if (!idToNeighbourIdsMap.containsKey(particle.getId()))
+                            idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
+
+                        for (Integer neighbourId : neighboursIds){
+                            idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                            if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                            idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                        }
+                    }
 
                     boolean canLookUp = row - 1 >= 0;
                     boolean canLookRight = column + 1 < matrixRowsAndColumns;
                     boolean canLookDown = row + 1 < matrixRowsAndColumns;
 
-                    if(canLookUp){
+                    if(!periodicBorder) {
+                        if (canLookUp) {
+                            // celda de arriba
+                            neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row - 1).get(column), interactionRadius, matrixSize, false);
+                            if (!neighboursIds.isEmpty()) {
+                                if (!idToNeighbourIdsMap.containsKey(particle.getId()))
+                                    idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
+
+                                for (Integer neighbourId : neighboursIds) {
+                                    idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                                    if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                        idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                                    idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                                }
+                            }
+
+                            // celda arriba-derecha
+                            if (canLookRight) {
+                                neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row - 1).get(column + 1), interactionRadius, matrixSize, false);
+                                if (!neighboursIds.isEmpty()) {
+                                    if (!idToNeighbourIdsMap.containsKey(particle.getId()))
+                                        idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
+
+                                    for (Integer neighbourId : neighboursIds) {
+                                        idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                                        if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                            idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                                        idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                                    }
+                                }
+                            }
+                        }
+
+                        if (canLookRight) {
+                            // celda derecha
+                            neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row).get(column + 1), interactionRadius, matrixSize, false);
+                            if (!neighboursIds.isEmpty()) {
+                                if (!idToNeighbourIdsMap.containsKey(particle.getId()))
+                                    idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
+
+                                for (Integer neighbourId : neighboursIds) {
+                                    idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                                    if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                        idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                                    idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                                }
+                            }
+
+                            // celda abajo-derecha
+                            if (canLookDown) {
+                                neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row + 1).get(column + 1), interactionRadius, matrixSize, false);
+                                if (!neighboursIds.isEmpty()) {
+                                    if (!idToNeighbourIdsMap.containsKey(particle.getId()))
+                                        idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
+
+                                    for (Integer neighbourId : neighboursIds) {
+                                        idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                                        if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                            idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                                        idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                                    }
+                                }
+                            }
+                        }
+                    } else {
                         // celda de arriba
-                        neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row - 1).get(column), interactionRadius);
-                        if(!neighboursIds.isEmpty() && !idToNeighbourIdsMap.containsKey(particle.getId()))
-                            idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
-                        idToNeighbourIdsMap.get(particle.getId()).addAll(neighboursIds);
+                        neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get((row - 1 + matrixRowsAndColumns) % matrixRowsAndColumns).get(column), interactionRadius, matrixSize, true);
+                        if (!neighboursIds.isEmpty()) {
+                            if (!idToNeighbourIdsMap.containsKey(particle.getId()))
+                                idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
+
+                            for (Integer neighbourId : neighboursIds) {
+                                idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                                if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                    idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                                idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                            }
+                        }
 
                         // celda arriba-derecha
-                        if(canLookRight){
-                            neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row - 1).get(column + 1), interactionRadius);
-                            if(!neighboursIds.isEmpty() && !idToNeighbourIdsMap.containsKey(particle.getId()))
+                        neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get((row - 1 + matrixRowsAndColumns) % matrixRowsAndColumns).get((column + 1) % matrixRowsAndColumns), interactionRadius, matrixSize, true);
+                        if (!neighboursIds.isEmpty()) {
+                            if (!idToNeighbourIdsMap.containsKey(particle.getId()))
                                 idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
-                            idToNeighbourIdsMap.get(particle.getId()).addAll(neighboursIds);
-                        }
-                    }
 
-                    if(canLookRight){
+                            for (Integer neighbourId : neighboursIds) {
+                                idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                                if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                    idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                                idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                            }
+                        }
+
                         // celda derecha
-                        neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row).get(column + 1), interactionRadius);
-                        if(!neighboursIds.isEmpty() && !idToNeighbourIdsMap.containsKey(particle.getId()))
-                            idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
-                        idToNeighbourIdsMap.get(particle.getId()).addAll(neighboursIds);
+                        neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row).get((column + 1) % matrixRowsAndColumns), interactionRadius, matrixSize, true);
+                        if (!neighboursIds.isEmpty()) {
+                            if (!idToNeighbourIdsMap.containsKey(particle.getId()))
+                                idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
+
+                            for (Integer neighbourId : neighboursIds) {
+                                idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                                if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                    idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                                idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                            }
+                        }
 
                         // celda abajo-derecha
-                        if(canLookDown){
-                            neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get(row + 1).get(column + 1), interactionRadius);
-                            if(!neighboursIds.isEmpty() && !idToNeighbourIdsMap.containsKey(particle.getId()))
+                        neighboursIds = getNeighboursFromCell(particle, particlesMatrix.get((row + 1) % matrixRowsAndColumns).get((column + 1) % matrixRowsAndColumns), interactionRadius, matrixSize, true);
+                        if (!neighboursIds.isEmpty()) {
+                            if (!idToNeighbourIdsMap.containsKey(particle.getId()))
                                 idToNeighbourIdsMap.put(particle.getId(), new HashSet<>());
-                            idToNeighbourIdsMap.get(particle.getId()).addAll(neighboursIds);                        }
+
+                            for (Integer neighbourId : neighboursIds) {
+                                idToNeighbourIdsMap.get(particle.getId()).add(neighbourId);
+
+                                if (!idToNeighbourIdsMap.containsKey(neighbourId))
+                                    idToNeighbourIdsMap.put(neighbourId, new HashSet<>());
+                                idToNeighbourIdsMap.get(neighbourId).add(particle.getId());
+                            }
+                        }
                     }
                 }
             }
         }
-
         return idToNeighbourIdsMap;
     }
 
-    private static Set<Integer> getNeighboursFromCell(Particle particle, Set<Particle> cell, double interactionRadius) {
+    private static Set<Integer> getNeighboursFromCell(Particle particle, Set<Particle> cell, double interactionRadius, double matrixSize, boolean periodicBorder) {
         Set<Integer> neighboursIds = new HashSet<>();
         for (Particle otherParticle : cell){
-            if(particle.distanceTo(otherParticle) <= interactionRadius){
+            if(particle.distanceTo(otherParticle, matrixSize, matrixSize, periodicBorder, periodicBorder) <= interactionRadius && particle.getId() != otherParticle.getId()){
                 neighboursIds.add(otherParticle.getId());
             }
         }

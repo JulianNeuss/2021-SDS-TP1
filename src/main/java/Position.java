@@ -25,9 +25,18 @@ public class Position {
         this.y = y;
     }
 
-    public double distanceTo(Position otherPosition){
-        double relativeX = Math.abs(x - otherPosition.x);
-        double relativeY = Math.abs(y - otherPosition.y);
+    public double distanceTo(Position otherPosition, double limitX, double limitY, boolean periodicX, boolean periodicY){
+        double relativeX, relativeY;
+        if(periodicX) {
+            relativeX = Math.min(limitX - Math.abs(x - otherPosition.x), Math.abs(x - otherPosition.x));
+        }
+        else
+            relativeX = Math.abs(x - otherPosition.x);
+
+        if(periodicY)
+            relativeY = Math.min(limitY - Math.abs(y - otherPosition.y), Math.abs(y - otherPosition.y));
+        else
+            relativeY = Math.abs(y - otherPosition.y);
         return Math.sqrt(relativeX * relativeX + relativeY * relativeY);
     }
 
