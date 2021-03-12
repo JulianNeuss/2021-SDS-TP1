@@ -21,8 +21,9 @@ public class Particle {
         return radius;
     }
 
-    public double distanceTo(Particle otherParticle){
-        return position.distanceTo(otherParticle.getPosition()) - radius - otherParticle.radius;
+    public double distanceTo(Particle otherParticle, double limitX, double limitY, boolean periodicX, boolean periodicY){
+        return position.distanceTo(otherParticle.getPosition(), limitX, limitY, periodicX, periodicY) - radius - otherParticle.radius;
+
     }
 
     public Position getPosition() {

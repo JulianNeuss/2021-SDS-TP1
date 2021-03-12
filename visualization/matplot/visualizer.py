@@ -27,7 +27,7 @@ def show_particles(particleid = -1):
         if pid == particleid:
             color.append("red")
             if p.pr > 0:
-                radius_shower = plt.Circle((p.x,p.y),p.pr,facecolor=(1,0,0,0.1))
+                radius_shower = plt.Circle((p.x,p.y),p.pr + p.r,facecolor=(1,0,0,0.1))
         elif particleid in sim_data.neighbours and pid in sim_data.neighbours[particleid]:
             color.append("yellow")
         else:
