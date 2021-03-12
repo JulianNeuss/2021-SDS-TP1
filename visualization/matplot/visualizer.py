@@ -21,10 +21,13 @@ sim_data = data_parser.data_getter(
 def show_particles(particleid = -1):
     patches = [plt.Circle((p.x,p.y), p.r) for p in  sim_data.particles]
     color = []
+    radius_shower = None
     for ind,p in  enumerate(sim_data.particles):
         pid = ind + 1
         if pid == particleid:
             color.append("red")
+            if p.pr > 0:
+                radius_shower = plt.Circle((p.x,p.y),p.pr,facecolor=(1,0,0,0.1))
         elif particleid in sim_data.neighbours and pid in sim_data.neighbours[particleid]:
             color.append("yellow")
         else:
@@ -33,6 +36,8 @@ def show_particles(particleid = -1):
     ax.clear()
     ax.figure.set_size_inches(14,10)
     coll = matplotlib.collections.PatchCollection(patches, facecolors=color)
+    if radius_shower != None:
+        ax.add_patch(radius_shower)
     ax.add_collection(coll)
     ax.margins(0.01)
     ax.figure.canvas.draw()

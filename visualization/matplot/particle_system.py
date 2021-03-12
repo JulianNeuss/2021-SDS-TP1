@@ -1,11 +1,11 @@
 class Particle:
-    def __init__( self, x = 0, y = 0, r = 0,unnamed_prop = 0):
+    def __init__( self, x = 0, y = 0, r = 0,pr = 0):
         self.x = x
         self.y = y
         self.r = r
-        self.unnamed_prop = unnamed_prop
+        self.pr = pr
     def __repr__(self):
-        return "{{ x:{}, y:{}, r:{}, unnamed:{} }}".format(self.x,self.y,self.r,self.unnamed_prop)
+        return "{{ x:{}, y:{}, r:{}, pr:{} }}".format(self.x,self.y,self.r,self.pr)
 
 class SimulationData:
     def __init__(self):
