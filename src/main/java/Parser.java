@@ -6,41 +6,31 @@ import java.util.Scanner;
 
 public class Parser {
 
-    // Antes de utilizar esta clase te recomiendo ver el ejemplo en MAIN
+    private int particlesQty;
+    private int matrixSide;
+    private int initialTime;
+    private final List<Double> particleRadiusList = new ArrayList<>();
+    private final List<Double> particlePropertyList = new ArrayList<>();
+    private final List<Position> particlePositions = new ArrayList<>();
 
     // filePath: Should look like this "/Users/julian/Desktop/Static100.txt"
-    // type: Should be 0 if the input file is Static or 1 if it is Dynamic
-    String filePath;
-    int type;
-    int N;
-    int L;
-    int t0;
-    List<Double> particleRadiusList = new ArrayList<>();
-    List<Double> particlePropertyList = new ArrayList<>();
-    List<Double> x = new ArrayList<>();
-    List<Double> y = new ArrayList<>();
-
-    public Parser(String filePath, int type) {
-        this.filePath = filePath;
-        this.type = type;
-
+    public Parser(String filePath, FileType type) {
         try {
             Scanner scanner = new Scanner(new File(filePath));
-            if(type == 0){
-                this.N = Integer.parseInt(scanner.nextLine().trim());
-                this.L = Integer.parseInt(scanner.nextLine().trim());
+            if(type == FileType.STATIC){
+                this.particlesQty = Integer.parseInt(scanner.nextLine().trim());
+                this.matrixSide = Integer.parseInt(scanner.nextLine().trim());
                 while (scanner.hasNextLine()) {
-                    String[] aux = scanner.nextLine().trim().split("    ", 2);
+                    String[] aux = scanner.nextLine().trim().split(" {4}", 2);
                     particleRadiusList.add(Double.parseDouble(aux[0]));
                     particlePropertyList.add(Double.parseDouble(aux[1]));
                 }
             }
-            if(type == 1){
-                this.t0 = Integer.parseInt(scanner.nextLine().trim());
+            else if(type == FileType.DYNAMIC){
+                this.initialTime = Integer.parseInt(scanner.nextLine().trim());
                 while (scanner.hasNextLine()) {
-                    String[] aux = scanner.nextLine().trim().split("   ", 2);
-                    x.add(Double.parseDouble(aux[0]));
-                    y.add(Double.parseDouble(aux[1]));
+                    String[] aux = scanner.nextLine().trim().split(" {3}", 2);
+                    particlePositions.add(new Position(Double.parseDouble(aux[0]), Double.parseDouble(aux[1])));
                 }
             }
             scanner.close();
@@ -49,16 +39,16 @@ public class Parser {
         }
     }
 
-    public int getN() {
-        return N;
+    public int getParticlesQty() {
+        return particlesQty;
     }
 
-    public int getL() {
-        return L;
+    public int getMatrixSide() {
+        return matrixSide;
     }
 
-    public int getT0() {
-        return t0;
+    public int getInitialTime() {
+        return initialTime;
     }
 
     public List<Double> getParticleRadiusList() {
@@ -69,36 +59,8 @@ public class Parser {
         return particlePropertyList;
     }
 
-    public List<Double> getXList() {
-        return x;
-    }
-
-    public List<Double> getYList() {
-        return y;
-    }
-
-    public static void main(String[] args) {
-
-    //Aca dejo ejemplo de como se utilizaria esta clase
-
-    // Creamos el Parser pasandole el path como string y el tipo de archivo. //
-    // STATIC = 0
-    // DINAMIC = 1
-
-        // Parser ParserExample = new Parser("/Users/julian/Desktop/Dynamic100.txt",1);
-
-    // Solicitamos los valores guardados en el archivo estatico //
-
-        // ParserExample.getN();
-        // ParserExample.getL();
-        // ParserExample.getParticlePropertyList();
-        // ParserExample.getParticleRadiusList();
-
-    // Solicitamos los valores guardados en el archivo dinamico //
-
-        // ParserExample.getT0();
-        // ParserExample.getXList();
-        // ParserExample.getYList();
+    public List<Position> getParticlePositions() {
+        return particlePositions;
     }
 
 }
