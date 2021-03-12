@@ -27,3 +27,10 @@ override dataFilename := -DdataFilenam="$(dataFilename)"
 endif
 testmns:
 	java $(minN) $(maxN) $(rc) $(r) $(L) $(dataPath) $(dataFilename) -cp out TestMNs
+
+
+data_visualizer:
+	@bash -c "cd visualization/matplot;source .env/bin/activate;python visualizer.py"
+
+testmns_visualizer:
+	@bash -c "cd visualization/matplot;source .env/bin/activate;python testmnsVisualizer.py"
