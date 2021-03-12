@@ -1,7 +1,7 @@
 import os
 from particle_system import *
 
-DATA_PATH = "./dataExample"
+DATA_PATH = "./dataExamples"
 DYNAMIC_FILE = "dynamicExample.txt"
 STATIC_FILE = "staticExample.txt"
 OUTPUT_FILE = "outputExample.txt"
@@ -22,7 +22,7 @@ def static_file_getter(sim_data,static_file_path):
     i = 0
     while line:
         d = line.strip().split(STATIC_FILE_SEPARATOR)
-        p = Particle(r=float(d[0]),unnamed_prop=float(d[1]))
+        p = Particle(r=float(d[0]),pr=float(d[1]))
         sim_data.add_particle(p)
         
         # advance loop
