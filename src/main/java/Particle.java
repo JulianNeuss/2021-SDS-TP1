@@ -2,10 +2,10 @@ import java.util.Objects;
 
 public class Particle {
     private final int id;
-    private final int radius;
+    private final double radius;
     private final Position position;
 
-    public Particle(int id, int radius, double x, double y) {
+    public Particle(int id, double radius, double x, double y) {
         this.id = id;
         if(radius < 0)
             throw new IllegalArgumentException("Radius can't be negative");
@@ -17,7 +17,7 @@ public class Particle {
         return id;
     }
 
-    public int getRadius() {
+    public double getRadius() {
         return radius;
     }
 
@@ -40,5 +40,14 @@ public class Particle {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Particle{" +
+                "id=" + id +
+                ", radius=" + radius +
+                ", position=" + position +
+                '}';
     }
 }
