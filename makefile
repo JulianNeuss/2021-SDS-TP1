@@ -25,9 +25,26 @@ endif
 ifneq ($(dataFilename),)
 override dataFilename := -DdataFilenam="$(dataFilename)"
 endif
+ifneq ($(dynamicFilename),)
+override dynamicFilename := -DdynamicFilename=$(dynamicFilename)
+endif
+ifneq ($(staticFilename),)
+override staticFilename := -DstaticFilename=$(staticFilenamer)
+endif
+ifneq ($(outputFilename),)
+override outputFilename := -DoutputFilename=$(outputFilename)
+endif
+ifneq ($(periodicBorder),)
+override periodicBorder := -DperiodicBorder=$(periodicBorder)
+endif
+
 testmns:
 	java $(minN) $(maxN) $(rc) $(r) $(L) $(dataPath) $(dataFilename) -cp out TestMNs
+simulationApp:
+	java  $(dynamicFilename) $(staticFilename) $(outputFilename) $(periodicBorder) $(N) $(rc) $(r) $(L) -cp out SimulationApp
 
+generateFiles:
+	java  $(dynamicFilename) $(staticFilename) $(N) $(rc) $(r) $(L) -cp out GenerateFiles
 
 data_visualizer:
 	@bash -c "cd visualization/matplot;source .env/bin/activate;python visualizer.py"

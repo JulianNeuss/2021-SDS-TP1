@@ -1,18 +1,61 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 public class SimulationApp {
-    private static final String OUTPUT_FILENAME = "/Users/aroca/Desktop/2021-SDS-TP1/visualization/matplot/dataExamples/output.txt";
-    private static final String STATIC_FILENAME = "/Users/aroca/Desktop/2021-SDS-TP1/visualization/matplot/dataExamples/staticExample.txt";
-    private static final String DYNAMIC_FILENAME = "/Users/aroca/Desktop/2021-SDS-TP1/visualization/matplot/dataExamples/dynamicExample.txt";
+    private static String OUTPUT_FILENAME = "./data/output.txt";
+    private static String STATIC_FILENAME = "./data/static.txt";
+    private static String DYNAMIC_FILENAME = "./data/dynamic.txt";
 
-    private static final boolean PERIODIC_BORDER = true;
+    private static boolean PERIODIC_BORDER = true;
 
     public static void main(String[] args) {
+        Properties properties = System.getProperties();
+        if( properties.getProperty("dynamicFilename")!= null ){
+            DYNAMIC_FILENAME = properties.getProperty("dynamicFilename");
+        }
+        DYNAMIC_FILENAME = Paths.get(DYNAMIC_FILENAME).toAbsolutePath().toString();
+        if( properties.getProperty("staticFilename")!= null ){
+            STATIC_FILENAME = properties.getProperty("staticFilename");
+        }
+        STATIC_FILENAME = Paths.get(STATIC_FILENAME).toAbsolutePath().toString();
+        if( properties.getProperty("outputFilename")!= null ){
+            OUTPUT_FILENAME = properties.getProperty("staticFilename");
+        }
+        OUTPUT_FILENAME = Paths.get(OUTPUT_FILENAME).toAbsolutePath().toString();
+        if( properties.getProperty("periodicBorder")!= null ){
+            PERIODIC_BORDER = Boolean.parseBoolean(properties.getProperty("staticFilename"));
+        }
+
+        //check file existance and create ouput file
+        // check static
+        File checker = new File(STATIC_FILENAME);
+        if(!checker.exists()){
+            System.err.println("Dynamic file does not exist");
+            System.exit(1);
+        }
+        //check dynamic
+        checker = new File(DYNAMIC_FILENAME);
+        if(!checker.exists()){
+            System.err.println("Dynamic file does not exist");
+            System.exit(1);
+        }
+        checker = new File(OUTPUT_FILENAME);
+        if(!checker.getParentFile().exists()){
+            if(!checker.getParentFile().mkdirs()){
+                System.err.println("Output directory does not exist and could not be created");
+                System.exit(1);
+            }
+        }
+
+
+
         Parser staticParser = new Parser(STATIC_FILENAME, FileType.STATIC);
         Parser dynamicParser = new Parser(DYNAMIC_FILENAME, FileType.DYNAMIC);
 
