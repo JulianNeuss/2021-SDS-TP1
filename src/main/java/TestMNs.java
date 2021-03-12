@@ -3,28 +3,51 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TestMNs {
     final static String RESULTS_DIRECTORY_PATH = "data";
     final static String RESULTS_FILENAME = "testmns.txt";
 
     public static void main(String[] args) {
-        final int matrixSide = 100;
-        final int MIN_PARTICLES = 990;
-        final int MAX_PARTICLES = 1000;
-        final double rc = 1.00;
-        final int radius = 1;
+        int matrixSide = 100;
+        int minParticles = 990;
+        int maxParticles = 1000;
+        double rc = 1.00;
+        double radius = 1;
+        Properties properties = System.getProperties();
+        if( properties.getProperty("minN")!= null ){
+            minParticles = Integer.parseInt(properties.getProperty("minN"));
+        }
+        if( properties.getProperty("maxN")!= null ){
+            maxParticles = Integer.parseInt(properties.getProperty("maxN"));
+        }
+        if( properties.getProperty("rc")!= null ){
+            rc = Double.parseDouble(properties.getProperty("rc"));
+        }
+        if( properties.getProperty("r")!= null ){
+            radius = Double.parseDouble(properties.getProperty("r"));
+        }
+        if( properties.getProperty("L")!= null ){
+            matrixSide = Integer.parseInt(properties.getProperty("L"));
+        }
+
+        System.out.println(
+                "Running test with { minN:" + minParticles+
+                        ",maxN:" + maxParticles +
+                        ",rc:" + rc +
+                        ",r:" + radius +
+                        ",L:" + matrixSide +
+                "}"
+        );
+
         final Particle minValues = new Particle(0,radius,0,0);
         final Particle maxValues = new Particle(1,radius,matrixSide,matrixSide);
 
 
 
         List<TestResult> results = new ArrayList<>();
-        for (int n = MIN_PARTICLES; n < MAX_PARTICLES; n++){
+        for (int n = minParticles; n < maxParticles; n++){
             Set<Particle> particles = new HashSet<>(ParticleGenerator.generate(n,minValues,maxValues));
             for (int m = 1; m < matrixSide/(rc + radius);m++){
                 long startMillis = System.currentTimeMillis();
