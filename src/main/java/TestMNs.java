@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class TestMNs {
-    final static String RESULTS_DIRECTORY_PATH = "data";
-    final static String RESULTS_FILENAME = "testmns.txt";
+    static String RESULTS_DIRECTORY_PATH = "data";
+    static String RESULTS_FILENAME = "testmns.txt";
 
     public static void main(String[] args) {
         int matrixSide = 100;
@@ -30,6 +30,15 @@ public class TestMNs {
         }
         if( properties.getProperty("L")!= null ){
             matrixSide = Integer.parseInt(properties.getProperty("L"));
+        }
+
+
+        if( properties.getProperty("dataPath")!= null ){
+            RESULTS_DIRECTORY_PATH = properties.getProperty("dataPath");
+        }
+
+        if( properties.getProperty("dataFilename")!= null ){
+            RESULTS_FILENAME = properties.getProperty("dataFilename");
         }
 
         System.out.println(

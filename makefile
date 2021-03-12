@@ -19,5 +19,11 @@ endif
 ifneq ($(L),)
 override L := -DL=$(L)
 endif
+ifneq ($(dataPath),)
+override dataPath := -DdataPath="$(dataPath)"
+endif
+ifneq ($(dataFilename),)
+override dataFilename := -DdataFilenam="$(dataFilename)"
+endif
 testmns:
-	java $(minN) $(maxN) $(rc) $(r) $(L) -cp out TestMNs
+	java $(minN) $(maxN) $(rc) $(r) $(L) $(dataPath) $(dataFilename) -cp out TestMNs
