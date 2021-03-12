@@ -51,7 +51,7 @@ public class TestMNs {
             Set<Particle> particles = new HashSet<>(ParticleGenerator.generate(n,minValues,maxValues));
             for (int m = 1; m < matrixSide/(rc + radius);m++){
                 long startMillis = System.currentTimeMillis();
-                CellIndexMethod.findNeighbours(particles,matrixSide,m,rc);
+                CellIndexMethod.findNeighbours(particles,matrixSide,m,rc,false);
                 long endMillis = System.currentTimeMillis();
                 results.add(new TestResult(
                         n, m,
