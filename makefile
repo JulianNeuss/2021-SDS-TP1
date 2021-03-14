@@ -29,7 +29,7 @@ ifneq ($(dynamicFilename),)
 override dynamicFilename := -DdynamicFilename=$(dynamicFilename)
 endif
 ifneq ($(staticFilename),)
-override staticFilename := -DstaticFilename=$(staticFilenamer)
+override staticFilename := -DstaticFilename=$(staticFilename)
 endif
 ifneq ($(outputFilename),)
 override outputFilename := -DoutputFilename=$(outputFilename)
