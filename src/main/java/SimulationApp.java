@@ -69,9 +69,12 @@ public class SimulationApp {
         }
 
         int matrixRowsAndColumns = M;
-
+        long startTime = System.currentTimeMillis();
         Map<Integer, Set<Integer>> idsToNeighboursIdsMap =  CellIndexMethod.findNeighbours(particles, staticParser.getMatrixSide(),
                 matrixRowsAndColumns, staticParser.getParticlePropertyList().get(0), PERIODIC_BORDER);
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("Simulation lasted:" + (endTime - startTime) + "ms");
 
         StringBuilder str = new StringBuilder();
         for(Integer id : idsToNeighboursIdsMap.keySet()){
