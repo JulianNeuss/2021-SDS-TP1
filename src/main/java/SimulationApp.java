@@ -27,7 +27,7 @@ public class SimulationApp {
         }
         STATIC_FILENAME = Paths.get(STATIC_FILENAME).toAbsolutePath().toString();
         if( properties.getProperty("outputFilename")!= null ){
-            OUTPUT_FILENAME = properties.getProperty("staticFilename");
+            OUTPUT_FILENAME = properties.getProperty("outputFilename");
         }
         OUTPUT_FILENAME = Paths.get(OUTPUT_FILENAME).toAbsolutePath().toString();
         if( properties.getProperty("periodicBorder")!= null ){
