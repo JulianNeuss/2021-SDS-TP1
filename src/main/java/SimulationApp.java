@@ -17,6 +17,8 @@ public class SimulationApp {
     private static int M = 5;
 
     public static void main(String[] args) {
+        boolean ismsetted = false;
+
         Properties properties = System.getProperties();
         if( properties.getProperty("dynamicFilename")!= null ){
             DYNAMIC_FILENAME = properties.getProperty("dynamicFilename");
@@ -35,6 +37,7 @@ public class SimulationApp {
         }
         if( properties.getProperty("M") != null ){
             M = Integer.parseInt(properties.getProperty("M"));
+            ismsetted = true;
         }
         //check file existance and create ouput file
         // check static
@@ -63,12 +66,22 @@ public class SimulationApp {
         Parser dynamicParser = new Parser(DYNAMIC_FILENAME, FileType.DYNAMIC);
 
         Set<Particle> particles = new HashSet<>();
+        double maxRadius = 0;
         for(int particleId = 0; particleId < staticParser.getParticlesQty(); particleId++){
             particles.add(new Particle(particleId + 1, staticParser.getParticleRadiusList().get(particleId),
                     dynamicParser.getParticlePositions().get(particleId).getX(), dynamicParser.getParticlePositions().get(particleId).getY()));
+            if(maxRadius < staticParser.getParticleRadiusList().get(particleId)){
+                maxRadius = staticParser.getParticleRadiusList().get(particleId);
+            }
         }
-
-        int matrixRowsAndColumns = M;
+        int matrixRowsAndColumns;
+        if(!ismsetted){
+            matrixRowsAndColumns = (int) Math.floor(
+                    staticParser.getMatrixSide()/(maxRadius +  staticParser.getParticlePropertyList().get(0) )
+            );
+        }else{
+            matrixRowsAndColumns = M;
+        }
         long startTime = System.currentTimeMillis();
         Map<Integer, Set<Integer>> idsToNeighboursIdsMap =  CellIndexMethod.findNeighbours(particles, staticParser.getMatrixSide(),
                 matrixRowsAndColumns, staticParser.getParticlePropertyList().get(0), PERIODIC_BORDER);
