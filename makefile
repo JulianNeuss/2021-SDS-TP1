@@ -53,10 +53,17 @@ simulationApp:
 generateFiles:
 	java  $(dynamicFilename) $(staticFilename) $(N) $(rc) $(r) $(L) -cp out GenerateFiles
 
+timegraph:
+	java $(minN) $(maxN) $(rc) $(r) $(L) $(dataPath) $(dataFilename) -cp out TimeGraph
+
 data_visualizer:
 	@bash -c "cd visualization/matplot;source .env/bin/activate;python visualizer.py"
 
 testmns_visualizer:
 	@bash -c "cd visualization/matplot;source .env/bin/activate;python testmnsVisualizer.py"
 
+timegraph_visualizer:
+	@bash -c "cd visualization/matplot;source .env/bin/activate;python graph.py"
+
+make all_timegraph:compile timegraph timegraph_visualizer
 
