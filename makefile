@@ -42,11 +42,13 @@ endif
 ifneq ($(periodicBorder),)
 override periodicBorder := -DperiodicBorder=$(periodicBorder)
 endif
-
+ifneq ($(M),)
+override M := -DM=$(M)
+endif
 testmns:
 	java $(minN) $(maxN) $(rc) $(r) $(L) $(dataPath) $(dataFilename) -cp out TestMNs
 simulationApp:
-	java  $(dynamicFilename) $(staticFilename) $(outputFilename) $(periodicBorder) $(N) $(rc) $(r) $(L) -cp out SimulationApp
+	java $(dynamicFilename) $(staticFilename) $(outputFilename) $(periodicBorder) $(N) $(rc) $(r) $(L) $(M) -cp out SimulationApp
 
 generateFiles:
 	java  $(dynamicFilename) $(staticFilename) $(N) $(rc) $(r) $(L) -cp out GenerateFiles

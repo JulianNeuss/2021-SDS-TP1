@@ -14,6 +14,7 @@ public class SimulationApp {
     private static String DYNAMIC_FILENAME = "./data/dynamic.txt";
 
     private static boolean PERIODIC_BORDER = true;
+    private static int M = 5;
 
     public static void main(String[] args) {
         Properties properties = System.getProperties();
@@ -30,9 +31,11 @@ public class SimulationApp {
         }
         OUTPUT_FILENAME = Paths.get(OUTPUT_FILENAME).toAbsolutePath().toString();
         if( properties.getProperty("periodicBorder")!= null ){
-            PERIODIC_BORDER = Boolean.parseBoolean(properties.getProperty("staticFilename"));
+            PERIODIC_BORDER = Boolean.parseBoolean(properties.getProperty("periodicBorder"));
         }
-
+        if( properties.getProperty("M") != null ){
+            M = Integer.parseInt(properties.getProperty("M"));
+        }
         //check file existance and create ouput file
         // check static
         File checker = new File(STATIC_FILENAME);
@@ -65,7 +68,7 @@ public class SimulationApp {
                     dynamicParser.getParticlePositions().get(particleId).getX(), dynamicParser.getParticlePositions().get(particleId).getY()));
         }
 
-        int matrixRowsAndColumns = 5;
+        int matrixRowsAndColumns = M;
 
         Map<Integer, Set<Integer>> idsToNeighboursIdsMap =  CellIndexMethod.findNeighbours(particles, staticParser.getMatrixSide(),
                 matrixRowsAndColumns, staticParser.getParticlePropertyList().get(0), PERIODIC_BORDER);
