@@ -22,6 +22,8 @@ def show_particles(particleid = -1):
     patches = [plt.Circle((p.x,p.y), p.r) for p in  sim_data.particles]
     color = []
     radius_shower = None
+    if particleid > 0:
+        print("Showing neighbours for particle:{}".format(particleid))
     for ind,p in  enumerate(sim_data.particles):
         pid = ind + 1
         if pid == particleid:
