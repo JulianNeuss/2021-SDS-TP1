@@ -1,10 +1,10 @@
 import os
 from particle_system import *
 
-DATA_PATH = "./dataExamples"
-DYNAMIC_FILE = "dynamicExample.txt"
-STATIC_FILE = "staticExample.txt"
-OUTPUT_FILE = "outputExample.txt"
+DATA_PATH = "../../data"
+DYNAMIC_FILE = "dynamic.txt"
+STATIC_FILE = "static.txt"
+OUTPUT_FILE = "output.txt"
 
 def static_file_getter(sim_data,static_file_path):
     STATIC_FILE_SEPARATOR = '    '

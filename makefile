@@ -1,3 +1,5 @@
+all:compile generateFiles simulationApp data_visualizer
+
 compile:
 	mkdir -p out
 	javac src/main/java/*.java -d out
@@ -18,6 +20,9 @@ override r := -Dr=$(r)
 endif
 ifneq ($(L),)
 override L := -DL=$(L)
+endif
+ifneq ($(N),)
+override N := -DN=$(N)
 endif
 ifneq ($(dataPath),)
 override dataPath := -DdataPath="$(dataPath)"
@@ -51,3 +56,5 @@ data_visualizer:
 
 testmns_visualizer:
 	@bash -c "cd visualization/matplot;source .env/bin/activate;python testmnsVisualizer.py"
+
+
