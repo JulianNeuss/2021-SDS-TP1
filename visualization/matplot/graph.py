@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
 
 FILE_PATH = '../../data/timegraph.txt'
 SEPARATOR = ' '
@@ -33,8 +32,8 @@ max_n = max(map(lambda tr:tr.N,test_results))
 g1_y_values = []
 g1_y_errors = []
 for v in g1_x_values:
-    g1_y_values.append(next(filter(lambda tr: tr.N == max_n and tr.M == v,test_results)).time)
-    g1_y_errors.append(next(filter(lambda tr: tr.N == max_n and tr.M == v,test_results)))
+    g1_y_values.append(next(iter(filter(lambda tr: tr.N == max_n and tr.M == v,test_results))).time)
+    g1_y_errors.append(next(iter(filter(lambda tr: tr.N == max_n and tr.M == v,test_results))))
 g1_y_errors = list(map(lambda v:(v.mintime,v.maxtime),g1_y_errors))
 plt.errorbar(g1_x_values,g1_y_values,yerr = list(map(list, zip(*g1_y_errors))),ecolor="red")
 plt.show()
