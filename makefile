@@ -67,3 +67,11 @@ timegraph_visualizer:
 
 make all_timegraph:compile timegraph timegraph_visualizer
 
+timegraph2:
+	java $(minN) $(maxN) $(rc) $(r) $(L) $(dataPath) $(dataFilename) -cp out TimeGraph2
+
+timegraph2_visualizer:
+	@bash -c "cd visualization/matplot;source .env/bin/activate;python graph2.py"
+
+make all_timegraph2:compile timegraph2 timegraph2_visualizer
+
