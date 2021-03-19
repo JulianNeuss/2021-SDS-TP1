@@ -12,9 +12,9 @@ public class TimeGraph2 {
 
     public static void main(String[] args) {
         int matrixSide = 100;
-        int minParticles = 990;
-        int maxParticles = 1000;
-        int NStep = 1;
+        int minParticles = 1;
+        int maxParticles = 10001;
+        int NStep = 100;
         int N = 1000;
         double rc = 1.00;
         double radius = 1;
@@ -75,6 +75,7 @@ public class TimeGraph2 {
                 long millisSum = 0;
                 long millisMax = 0;
                 long millisMin = 0;
+                CellIndexMethod.findNeighbours(particles,matrixSide,m,rc,false);
                 for (int i=0; i < tryQty; i++){
                     long startMillis = System.currentTimeMillis();
                     CellIndexMethod.findNeighbours(particles,matrixSide,m,rc,false);
@@ -111,6 +112,7 @@ public class TimeGraph2 {
                 long millisSum = 0;
                 long millisMax = 0;
                 long millisMin = 0;
+                CellIndexMethod.findNeighbours(particles,matrixSide,M,rc,false);
                 for (int i=0; i < tryQty; i++){
                     long startMillis = System.currentTimeMillis();
                     CellIndexMethod.findNeighbours(particles,matrixSide,M,rc,false);
