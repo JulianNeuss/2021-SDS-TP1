@@ -60,6 +60,15 @@ plt.rcParams.update({'font.size': 18})
 
 
 plt.figure()
+plt.subplot(1,2,1)
+plt.title("f(M)=log(time) with N={}".format(test_results_same_n[0].N))
+plt.xlabel("M")
+plt.ylabel("t(ms)")
+plt.yscale("log")
+plt.errorbar(g1_x_values,g1_y_values,yerr=g1_errors,ecolor="red")
+plt.show(block=False)
+
+plt.subplot(1,2,2)
 plt.title("f(M)=time with N={}".format(test_results_same_n[0].N))
 plt.xlabel("M")
 plt.ylabel("t(ms)")
