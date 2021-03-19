@@ -68,6 +68,7 @@ public class TimeGraph2 {
 
         List<TestResult> resultsSameN = new ArrayList<>();
         List<TestResult> resultsSameM = new ArrayList<>();
+        List<TestResult> bruteForce = new ArrayList<>();
         {
             Set<Particle> particles = new HashSet<>(ParticleGenerator.generate(N,minValues,maxValues));
             for (int m = 1; m < matrixSide/(rc + radius);m++){
@@ -136,6 +137,39 @@ public class TimeGraph2 {
                 ));
             }
         }
+        {
+            int M = 1;
+            for (int n = minParticles; n <= maxParticles; n+=NStep){
+                Set<Particle> particles = new HashSet<>(ParticleGenerator.generate(n,minValues,maxValues));
+                long millisSum = 0;
+                long millisMax = 0;
+                long millisMin = 0;
+                for (int i=0; i < tryQty; i++){
+                    long startMillis = System.currentTimeMillis();
+                    CellIndexMethod.findNeighbours(particles,matrixSide,M,rc,false);
+                    long endMillis = System.currentTimeMillis();
+                    long total = endMillis - startMillis;
+                    if(i == 0){
+                        millisMax = total;
+                        millisMin = total;
+                    }
+                    if(total < millisMin){
+                        millisMin = total;
+                    }
+                    if(total > millisMax){
+                        millisMax = total;
+                    }
+                    millisSum += total;
+                }
+                bruteForce.add(new TestResult(
+                        n, M,
+                        matrixSide,
+                        ((double)millisSum) / tryQty,
+                        millisMax,
+                        millisMin
+                ));
+            }
+        }
         try {
             File dirPath = new File(RESULTS_DIRECTORY_PATH);
             if (!dirPath.exists()){
@@ -149,6 +183,10 @@ public class TimeGraph2 {
             }
             writer.write( "\n");
             for( TestResult t : resultsSameM){
+                writer.write(t.toString() + "\n");
+            }
+            writer.write( "\n");
+            for( TestResult t : bruteForce){
                 writer.write(t.toString() + "\n");
             }
             writer.close();
