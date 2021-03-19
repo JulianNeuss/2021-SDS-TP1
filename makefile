@@ -45,6 +45,9 @@ endif
 ifneq ($(M),)
 override M := -DM=$(M)
 endif
+ifneq ($(NStep),)
+override NStep := -DNStep=$(NStep)
+endif
 testmns:
 	java $(minN) $(maxN) $(rc) $(r) $(L) $(dataPath) $(dataFilename) -cp out TestMNs
 simulationApp:
@@ -68,7 +71,7 @@ timegraph_visualizer:
 make all_timegraph:compile timegraph timegraph_visualizer
 
 timegraph2:
-	java $(minN) $(maxN) $(rc) $(r) $(L) $(dataPath) $(dataFilename) -cp out TimeGraph2
+	java $(minN) $(maxN) $(N) $(rc) $(r) $(L) $(dataPath) $(dataFilename) $(NStep) -cp out TimeGraph2
 
 timegraph2_visualizer:
 	@bash -c "cd visualization/matplot;source .env/bin/activate;python graph2.py"

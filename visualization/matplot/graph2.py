@@ -52,7 +52,7 @@ plt.rcParams.update({'font.size': 18})
 
 
 plt.subplot(1,2,1)
-plt.title("f(M)=time")
+plt.title("f(M)=time with N={}".format(test_results_same_n[0].N))
 plt.xlabel("M")
 plt.ylabel("t(ms)")
 plt.errorbar(g1_x_values,g1_y_values,yerr=g1_errors,ecolor="red")
@@ -66,10 +66,10 @@ for i,e in enumerate(list(map(lambda tr:(tr.mintime,tr.maxtime),test_results_sam
     g2_errors[1].append(e[1] - g2_y_values[i])
 
 plt.subplot(1,2,2)
-plt.title("f(N)=time")
+plt.title("f(N)=time with M={}".format(test_results_same_m[0].M))
 plt.xlabel("N")
 plt.ylabel("t(ms)")
-plt.errorbar(g1_x_values,g1_y_values,yerr=g1_errors,ecolor="red")
+plt.errorbar(g2_x_values,g2_y_values,yerr=g2_errors,ecolor="red")
 
 
 plt.show()

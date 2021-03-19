@@ -14,9 +14,14 @@ public class TimeGraph2 {
         int matrixSide = 100;
         int minParticles = 990;
         int maxParticles = 1000;
+        int NStep = 1;
+        int N = 1000;
         double rc = 1.00;
         double radius = 1;
         Properties properties = System.getProperties();
+        if( properties.getProperty("N")!= null ){
+            N = Integer.parseInt(properties.getProperty("N"));
+        }
         if( properties.getProperty("minN")!= null ){
             minParticles = Integer.parseInt(properties.getProperty("minN"));
         }
@@ -32,6 +37,9 @@ public class TimeGraph2 {
         if( properties.getProperty("L")!= null ){
             matrixSide = Integer.parseInt(properties.getProperty("L"));
         }
+        if( properties.getProperty("NStep")!= null ){
+            NStep = Integer.parseInt(properties.getProperty("NStep"));
+        }
 
 
         if( properties.getProperty("dataPath")!= null ){
@@ -43,11 +51,13 @@ public class TimeGraph2 {
         }
 
         System.out.println(
-                "Running test with { minN:" + minParticles+
+                "Running test with { N:" + N +
+                        ",minN:" + minParticles +
                         ",maxN:" + maxParticles +
                         ",rc:" + rc +
                         ",r:" + radius +
                         ",L:" + matrixSide +
+                        ",NStep:" + NStep +
                         "}"
         );
 
@@ -59,7 +69,7 @@ public class TimeGraph2 {
         List<TestResult> resultsSameN = new ArrayList<>();
         List<TestResult> resultsSameM = new ArrayList<>();
         {
-            Set<Particle> particles = new HashSet<>(ParticleGenerator.generate(maxParticles,minValues,maxValues));
+            Set<Particle> particles = new HashSet<>(ParticleGenerator.generate(N,minValues,maxValues));
             for (int m = 1; m < matrixSide/(rc + radius);m++){
                 long millisSum = 0;
                 long millisMax = 0;
@@ -82,7 +92,7 @@ public class TimeGraph2 {
                     millisSum += total;
                 }
                 resultsSameN.add(new TestResult(
-                        maxParticles, m,
+                        N, m,
                         matrixSide,
                         ((double)millisSum) / tryQty,
                         millisMax,
@@ -95,7 +105,7 @@ public class TimeGraph2 {
             if(M == matrixSide/(rc + radius)){
                 M--;
             }
-            for (int n = minParticles; n <= maxParticles; n++){
+            for (int n = minParticles; n <= maxParticles; n+=NStep){
                 Set<Particle> particles = new HashSet<>(ParticleGenerator.generate(n,minValues,maxValues));
                 long millisSum = 0;
                 long millisMax = 0;
