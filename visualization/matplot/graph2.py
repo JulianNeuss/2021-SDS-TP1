@@ -99,5 +99,13 @@ plt.ylabel("t(ms)")
 plt.errorbar(g3_x_values,g3_y_values,yerr=g3_errors,ecolor="red")
 plt.show(block=False)
 
+plt.figure()
+plt.title("f(N)=time with M={} vs M={}".format(test_results_same_m[0].M,test_results_brute_force[0].M))
+plt.xlabel("N")
+plt.ylabel("t(ms)")
+plt.errorbar(g2_x_values,g2_y_values,yerr=g2_errors,ecolor="red")
+plt.errorbar(g3_x_values,g3_y_values,yerr=g3_errors,ecolor="red")
+plt.show(block=False)
+
 
 plt.show()
